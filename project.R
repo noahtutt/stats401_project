@@ -107,3 +107,14 @@ avPlots(mlb_p7_adj)
 png(filename = "avplots/p4_adj.png", width = 720, height = 720)
 avPlots(mlb_p4_adj)
 . = dev.off()
+
+candidates = list(mlb_p7, mlb_p4, mlb_p7_adj, mlb_p4_adj)
+
+nrow(mlb_test)
+
+for (model in candidates) {
+
+	predicted = predict(model, mlb_test)
+	test_corr = cor(predicted, mlb_test$win_percentage)
+	print(test_corr ** 2)
+}
