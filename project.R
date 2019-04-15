@@ -6,10 +6,6 @@ mlb2018 = read.csv("mlb_team_data_2018.csv")
 
 mlb = rbind(mlb2016, mlb2017, mlb2018)
 
-head(mlb)
-length(mlb[[1]])
-
-
 trimmed_features = c(
 	"name",
 	"abbreviation",
