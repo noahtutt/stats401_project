@@ -22,7 +22,6 @@ trimmed_features = c(
 	"saves",
 	"times_struck_out"
 )
-head(mlb)
 
 mlb_trimmed = mlb[trimmed_features]
 
@@ -35,5 +34,6 @@ for (feature in trimmed_features) {
 	)
 	. = dev.off()
 }
+
 
 	
