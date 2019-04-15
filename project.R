@@ -1,6 +1,14 @@
 #!/usr/bin/R -q --slave -f
 
-mlb = read.csv("mlb_team_data_2018.csv")
+mlb2016 = read.csv("mlb_team_data_2016.csv")
+mlb2017 = read.csv("mlb_team_data_2017.csv")
+mlb2018 = read.csv("mlb_team_data_2018.csv")
+
+mlb = rbind(mlb2016, mlb2017, mlb2018)
+
+head(mlb)
+length(mlb[[1]])
+
 
 trimmed_features = c(
 	"name",
