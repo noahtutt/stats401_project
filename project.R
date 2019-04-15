@@ -35,7 +35,7 @@ mlb_trimmed = mlb[trimmed_features]
 
 for (feature in trimmed_features) {
 
-	png(filename = paste(feature, ".png", sep = ""), width = 720, height =  720)
+	png(filename = paste("individual_scatterplots/", feature, ".png", sep = ""), width = 720, height =  720)
 	plot(mlb_trimmed$win_percentage ~ mlb_trimmed[[feature]],
 		xlab = feature,
 		ylab = "win_percentage"
