@@ -5,7 +5,7 @@ library(HH)
 library(leaps)
 library(car)
 
-set.seed(11)
+set.seed(25)
 
 mlb2016 = read.csv("mlb_team_data_2016.csv")
 mlb2017 = read.csv("mlb_team_data_2017.csv")
@@ -118,3 +118,5 @@ for (model in candidates) {
 	test_corr = cor(predicted, mlb_test$win_percentage)
 	print(test_corr ** 2)
 }
+
+
