@@ -91,3 +91,19 @@ png(filename = "influence/p4.png", width = 720, height = 720)
 influencePlot(mlb_p4)
 . = dev.off()
 
+mlb_train_adjusted = mlb_train[!(row.names(mlb_train) %in% c(3, 21, 67)), ]
+nrow(mlb_train_adjusted)
+
+mlb_p7_adj = lm(as.formula(formula_p7), data = mlb_train_adjusted)
+summary(mlb_p7_adj)
+
+mlb_p4_adj = lm(as.formula(formula_p4), data = mlb_train_adjusted)
+summary(mlb_p4_adj)
+
+png(filename = "avplots/p7_adj.png", width = 720, height = 720)
+avPlots(mlb_p7_adj)
+. = dev.off()
+
+png(filename = "avplots/p4_adj.png", width = 720, height = 720)
+avPlots(mlb_p4_adj)
+. = dev.off()
