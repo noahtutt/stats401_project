@@ -11,6 +11,13 @@ mlb2016 = read.csv("mlb_team_data_2016.csv")
 mlb2017 = read.csv("mlb_team_data_2017.csv")
 mlb2018 = read.csv("mlb_team_data_2018.csv")
 
+dirs = c("influence", "avplots", "individual_scatterplots")
+for (dir in dirs) {
+	if (!dir.exists(dir)) {
+		dir.create(dir)
+	}
+}
+
 
 mlb = rbind(mlb2016, mlb2017, mlb2018)
 
