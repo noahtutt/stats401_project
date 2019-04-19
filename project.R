@@ -48,10 +48,6 @@ if (gen_images) {
 
 	for (feature in trimmed_features) {
 	
-		# plot(mlb_trimmed$win_percentage ~ mlb_trimmed[[feature]],
-		# 	xlab = feature,
-		# 	ylab = "win_percentage"
-		# )
 		ggplot(mlb_trimmed, mapping = aes_string(x = feature, y = "win_percentage")) + geom_point() +
 			xlab(feature) + ylab("win_percentage")
 		ggsave(filename = paste("individual_scatterplots/", feature, ".png", sep = ""))
@@ -123,56 +119,6 @@ avPlots(mlb_p4_adj)
 
 candidates = list(mlb_p7, mlb_p4, mlb_p7_adj, mlb_p4_adj)
 
-# r_squared = c(0, 0, 0, 0)
-# adj_r_squared = c(0, 0, 0, 0)
-# shrinkage = c(0, 0, 0, 0)
-# 
-# num_trials = 10
-
-	# cv_shrinkage = function(model, test) {
-	#  
-	#  	predicted = predict(model, test)
-	#  	test_corr = cor(predicted, test$win_percentage)
-	# 	summary(model)$r.squared - test_corr ** 2 	
-	# }
-	# 
-	# for (i in 1:num_trials) {
-	# 
-	# 	test_observations = sample(90, 60, replace = FALSE)
-	# 	mlb_train = mlb_trimmed[test_observations, ]
-	# 	mlb_test = mlb_trimmed[-test_observations, ]
-	# 	
-	# 	mlb_train_adjusted = mlb_train[!(row.names(mlb_train) %in% c(3, 21, 67)), ]
-	# 	
-	# 	candidates = list(
-	# 		lm(as.formula(formula_p7), data = mlb_train),
-	# 		lm(as.formula(formula_p4), data = mlb_train),
-	# 		lm(as.formula(formula_p7), data = mlb_train_adjusted),
-	# 		lm(as.formula(formula_p4), data = mlb_train_adjusted)
-	# 	)	
-	# 
-	# 	for (j in 1:4) {
-	# 
-	# 		r_squared[j] = r_squared[j] + summary(candidates[j])$r.squared
-	# 		adj_r_squared[j] = adj_r_squared[j] + summary(candidates[j])$adj.r.squared
-	# 		shrinkage[j] = shrinkage[j] + cv_shrinkage(candidates[j], mlb_test)	
-	# 
-	# 	}
-	# }
-	# 
-	# r_squared = r_squared / num_trials
-	# adj_r_squared = adj_r_squared / num_trials
-	# shrinkage = shrinkage / num_trials
-	# 
-	# 
-	# for (i in 1:4) {
-	# 
-	# 	writeLines(paste("Adjusted R^2:", adj_r_squared[i], "R^2", r_squared[i], "Shrinkage:", shrinkage[i]))
-	# 
-	# }
-
-nrow(mlb_test)
-
 for (model in candidates) {
 
 	predicted = predict(model, mlb_test)
@@ -214,7 +160,6 @@ plot(mlb_conference$conference, mlb_conference$win_percentage,
 
 conference_all = regsubsets(win_percentage ~ . - win_percentage, data = mlb_conference)
 summaryHH(mlb_all)
-
 
 # final model diagnostics
 # qqplot
