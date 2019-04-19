@@ -224,6 +224,8 @@ qqnorm(mlb_p7$resid)
 qqline(mlb_p7$resid, col = "purple")
 . = dev.off()
 
+vif(mlb_p7)
+vif(mlb_p4)
 
 
 
