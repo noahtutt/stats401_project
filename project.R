@@ -4,6 +4,7 @@ library(corrplot)
 library(HH)
 library(leaps)
 library(car)
+library(ggplot2)
 
 set.seed(25)
 
@@ -27,8 +28,7 @@ trimmed_features = c(
 	"average_pitcher_age",
 	"batting_average",
 	"earned_runs_against",
-	"hits",
-	"hits_allowed",
+	"hits", "hits_allowed",
 	"on_base_plus_slugging_percentage",
 	"runs",
 	"runs_against",
@@ -44,12 +44,13 @@ mlb_trimmed = mlb[trimmed_features]
 
 for (feature in trimmed_features) {
 
-	png(filename = paste("individual_scatterplots/", feature, ".png", sep = ""), width = 720, height =  720)
-	plot(mlb_trimmed$win_percentage ~ mlb_trimmed[[feature]],
-		xlab = feature,
-		ylab = "win_percentage"
-	)
-	. = dev.off()
+	# plot(mlb_trimmed$win_percentage ~ mlb_trimmed[[feature]],
+	# 	xlab = feature,
+	# 	ylab = "win_percentage"
+	# )
+	ggplot(mlb_trimmed, mapping = aes_string(x = feature, y = "win_percentage")) + geom_point() +
+		xlab(feature) + ylab("win_percentage")
+	ggsave(filename = paste("individual_scatterplots/", feature, ".png", sep = ""))
 }
 
 # suggests that some variables should be removed
@@ -125,5 +126,38 @@ for (model in candidates) {
 	test_corr = cor(predicted, mlb_test$win_percentage)
 	print(test_corr ** 2)
 }
+
+conference_features = c(trimmed_features, "abbreviation")
+conference = read.csv("conference.csv", stringsAsFactors = FALSE)
+mlb_conference = merge(mlb[conference_features], conference, by = "abbreviation")
+mlb_conference = mlb_conference[, -1]
+
+for (feature in trimmed_features) {
+
+	# plot(mlb_trimmed$win_percentage ~ mlb_trimmed[[feature]],
+	# 	xlab = feature,
+	# 	ylab = "win_percentage"
+	# )
+	ggplot(mlb_conference, mapping = aes_string(x = feature, y = "win_percentage", color = "conference")) + geom_point() +
+		xlab(feature) + ylab("win_percentage")
+	ggsave(filename = paste("individual_scatterplots/", feature, "_conference.png", sep = ""))
+}
+
+# true for AL
+bools = mlb_conference$conference == "AL"
+mlb_conference$conference = bools
+
+
+png(filename = "individual_scatterplots/conference.png", width = 720, height = 720)
+plot(mlb_conference$conference, mlb_conference$win_percentage,
+	xlab = "Conference",
+	ylab = "Win Percentage",
+	main = "Win Percentage vs Conference"
+)
+. = dev.off()
+
+conference_all = regsubsets(win_percentage ~ . - win_percentage, data = mlb_conference)
+summaryHH(mlb_all)
+
 
 
