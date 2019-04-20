@@ -1,4 +1,4 @@
-#!/usr/bin/R -q --slave -f
+#!/usr/bin/env R -q --slave -f
 
 library(corrplot)
 library(HH)
@@ -156,7 +156,6 @@ plot(mlb_conference$conference, mlb_conference$win_percentage,
 	ylab = "Win Percentage",
 	main = "Win Percentage vs Conference"
 )
-. = dev.off()
 
 conference_all = regsubsets(win_percentage ~ . - win_percentage, data = mlb_conference)
 summaryHH(mlb_all)
@@ -167,12 +166,14 @@ summaryHH(mlb_all)
 png(filename = "qqplot.png", width = 720, height = 720)
 qqnorm(mlb_p7$resid)
 qqline(mlb_p7$resid, col = "purple")
-. = dev.off()
 
 vif(mlb_p7)
 vif(mlb_p4)
 
-
+resid_plot_data = data.frame(resid = mlb_p4$resid, fit = mlb_p4$fit)
+ggplot(resid_plot_data, mapping = aes(x = fit, y = resid)) + 
+	geom_point() + xlab("Fitted Values") + ylab("Residuals") + geom_abline(slope = 0, intercept = 0)
+ggsave(filename = "fitted_vals.png")
 
 
 
